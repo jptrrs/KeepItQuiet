@@ -77,12 +77,12 @@ namespace KeepItQuiet
 
         public static Texture2D Icon()
         {
-            return ContentFinder<Texture2D>.Get("NaturalLightMap", true);
+            return ContentFinder<Texture2D>.Get("NoiseMap", true);
         }
 
         public static string IconTip()
         {
-            return "NaturalLightMap".Translate();
+            return "NoiseMap".Translate();
         }
 
         public bool GetCellBool(int index)

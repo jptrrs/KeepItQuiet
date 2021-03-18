@@ -8,7 +8,7 @@
     <description>Quiet need description.</description>
     <minIntelligence>Humanlike</minIntelligence>
     <!--<onlyIfCausedByHediff>true</onlyIfCausedByHediff>-->
-    <!--<baseLevel>0.8</baseLevel>-->
+    <baseLevel>0.8</baseLevel>
     <listPriority>90</listPriority>
     <!--<seekerRisePerHour>0.50</seekerRisePerHour>-->
   </NeedDef>

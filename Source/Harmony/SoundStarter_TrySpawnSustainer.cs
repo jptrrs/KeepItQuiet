@@ -14,16 +14,6 @@ namespace KeepItQuiet
     [HarmonyPatch(typeof(SoundStarter), nameof(SoundStarter.TrySpawnSustainer))]
     class SoundStarter_TrySpawnSustainer
     {
-        //public static void Postfix(TargetInfo info)
-        //{
-        //    bool flag = info.HasThing /*&& info.Thing != null && info.Thing.def != null*/;
-        //    if (flag)
-        //    {
-        //        //string test = info.Thing.def?.label ?? "undefined";
-        //        Log.Message($"playoneshot test");
-        //    }
-        //}
-
         public static void Postfix(SoundDef soundDef, SoundInfo info, Sustainer __result)
         {
             TargetInfo maker = info.Maker;

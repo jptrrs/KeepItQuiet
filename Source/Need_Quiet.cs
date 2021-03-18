@@ -91,61 +91,14 @@ namespace KeepItQuiet
 				return;
 			}
 			int noiseLevel = pawn.Map.GetComponent<MapComp_Noise>().noiseGrid[pawn.Map.cellIndices.CellToIndex(pawn.Position)];
-			float num = noiseLevel * noiseLevelFactor;
-
-			//float b = 0.2f;
-			//bool flag = !pawn.Spawned || pawn.Position.UsesOutdoorTemperature(pawn.Map);
-			//RoofDef roofDef = pawn.Spawned ? pawn.Position.GetRoof(pawn.Map) : null;
-			//float num;
-			//if (!flag)
-			//{
-			//	if (roofDef == null)
-			//	{
-			//		num = 5f;
-			//	}
-			//	else if (!roofDef.isThickRoof)
-			//	{
-			//		num = -0.32f;
-			//	}
-			//	else
-			//	{
-			//		num = -0.45f;
-			//		b = 0f;
-			//	}
-			//}
-			//else if (roofDef == null)
-			//{
-			//	num = 8f;
-			//}
-			//else if (roofDef.isThickRoof)
-			//{
-			//	num = -0.4f;
-			//}
-			//else
-			//{
-			//	num = 1f;
-			//}
-			//if (pawn.InBed() && num < 0f)
-			//{
-			//	num *= 0.2f;
-			//}
-			num /= 400;
+			float num;
+			if (noiseLevel > 0) num = noiseLevel * noiseLevelFactor * -1;
+			else num = 0.2f; // 25% the speed of a 8-level noise (stonecutting), but in the other direction.
+			num /= 200/*400*/;
 			float curLevel = CurLevel;
-			CurLevel -= num;
-			//if (num < 0f)
-			//{
-			//	CurLevel = Mathf.Min(CurLevel, Mathf.Max(CurLevel + num, b));
-			//}
-			//else
-			//{
-			//	CurLevel = Mathf.Min(CurLevel + num, 1f);
-			//}
+			CurLevel += num;
 			lastEffectiveDelta = CurLevel - curLevel;
-
-            if (lastEffectiveDelta > 0)
-            {
-				Log.Warning($"positive delta for {pawn} (noiseLevel{noiseLevel} => {curLevel} + {num} = {CurLevel})");
-			}
+			//Log.Warning($"Delta for {pawn}: {lastEffectiveDelta} (noiseLevel{noiseLevel} => {curLevel} + {num} = {CurLevel})");
 
 		}
 

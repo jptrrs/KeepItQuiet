@@ -13,16 +13,13 @@ namespace KeepItQuiet
 
         public static float GetSoundLevel(SoundDef soundDef)
         {
+            if (cachedLevels.ContainsKey(soundDef)) return cachedLevels[soundDef];
             float result = 1f;
-            if (cachedLevels.ContainsKey(soundDef)) result = cachedLevels[soundDef];
-            else
+            if (soundDef.subSounds.Any(x => x.volumeRange != null))
             {
-                if (soundDef.subSounds.Any(x => x.volumeRange != null))
-                {
-                    result = soundDef.subSounds.Select(x => x.volumeRange.Average).Aggregate((a, b) => a > b ? a : b);
-                }
-                cachedLevels.Add(soundDef, result);
+                result = soundDef.subSounds.Select(x => x.volumeRange.Average).Aggregate((a, b) => a > b ? a : b);
             }
+            cachedLevels.Add(soundDef, result);
             return result;
         }
     }

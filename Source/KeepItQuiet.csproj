@@ -56,6 +56,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Need_Quiet.cs" />
     <Compile Include="NoiseUtility.cs" />
     <Compile Include="Harmony\PlaySettings_DoPlaySettingsGlobalControls.cs" />
     <None Include="Harmony\Sustainer_End.cs" />

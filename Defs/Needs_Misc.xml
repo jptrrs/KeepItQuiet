@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <NeedDef>
+    <defName>Quiet</defName>
+    <needClass>KeepItQuiet.Need_Quiet</needClass>
+    <label>quiet</label>
+    <description>Quiet need description.</description>
+    <minIntelligence>Humanlike</minIntelligence>
+    <!--<onlyIfCausedByHediff>true</onlyIfCausedByHediff>-->
+    <!--<baseLevel>0.8</baseLevel>-->
+    <listPriority>90</listPriority>
+    <!--<seekerRisePerHour>0.50</seekerRisePerHour>-->
+  </NeedDef>
+
+</Defs>

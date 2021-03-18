@@ -10,9 +10,9 @@ namespace KeepItQuiet
     public class MapComp_Noise : MapComponent, ICellBoolGiver
     {
         public static bool toggleShow = false;
+        public Dictionary<int, List<Vector2Int>> bangs;
         public int[] noiseGrid;
         public Dictionary<Sustainer, List<Vector2Int>> polluters;
-        public Dictionary<int, List<Vector2Int>> bangs;
         protected static CellBoolDrawer drawer;
         protected float defaultOpacity;
         private Map lastSeenMap;
@@ -40,6 +40,16 @@ namespace KeepItQuiet
                 return Color.red;
             }
         }
+        public static Texture2D Icon()
+        {
+            return ContentFinder<Texture2D>.Get("NoiseMap", true);
+        }
+
+        public static string IconTip()
+        {
+            return "NoiseMap".Translate();
+        }
+
         public void AddBang(IntVec3 center, float level = 1)
         {
             Log.Message($"adding bang level {level} @ {center}");
@@ -62,29 +72,6 @@ namespace KeepItQuiet
             polluters[source].AddRange(pollution);
         }
 
-        private void MakeNoise(IntVec3 center, float level, out List<Vector2Int> log)
-        {
-            log = new List<Vector2Int>();
-            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(level,56), true))
-            {
-                int idx = map.cellIndices.CellToIndex(tile);
-                int str = Mathf.RoundToInt(level - tile.DistanceToSquared(center));
-                log.Add(new Vector2Int(idx, str));
-                noiseGrid[idx] += str;
-            }
-            drawer.SetDirty();
-        }
-
-        public static Texture2D Icon()
-        {
-            return ContentFinder<Texture2D>.Get("NoiseMap", true);
-        }
-
-        public static string IconTip()
-        {
-            return "NoiseMap".Translate();
-        }
-
         public bool GetCellBool(int index)
         {
             return noiseGrid[index] > 0;
@@ -103,6 +90,18 @@ namespace KeepItQuiet
             drawer = new CellBoolDrawer(this, Find.CurrentMap.Size.x, Find.CurrentMap.Size.z);
         }
 
+        public override void MapComponentTick()
+        {
+            base.MapComponentTick();
+            int ticksGame = Find.TickManager.TicksGame;
+            if (nextUpdateTick == 0 || ticksGame >= nextUpdateTick || Find.CurrentMap != lastSeenMap)
+            {
+                Silence(ticksGame);
+                nextUpdateTick = ticksGame + updateDelay;
+                lastSeenMap = Find.CurrentMap;
+            }
+        }
+
         public override void MapComponentUpdate()
         {
             if (toggleShow)
@@ -112,29 +111,13 @@ namespace KeepItQuiet
             drawer.CellBoolDrawerUpdate();
         }
 
-        public override void MapComponentTick()
-        {
-            base.MapComponentTick();
-            int ticksGame = Find.TickManager.TicksGame;
-            if (nextUpdateTick == 0 || ticksGame >= nextUpdateTick || Find.CurrentMap != lastSeenMap)
-            {
-                Silence(ticksGame);
-                drawer.SetDirty();
-                nextUpdateTick = ticksGame + updateDelay;
-                lastSeenMap = Find.CurrentMap;
-            }
-        }
-
         public void Silence(int tick)
         {
             foreach (Sustainer sust in polluters.Keys)
             {
                 if (sust.Ended)
                 {
-                    foreach (Vector2Int value in polluters[sust])
-                    {
-                        noiseGrid[value.x] -= value.y;
-                    }
+                    ClearNoise(polluters[sust]);
                     polluters[sust].Clear();
                 }
             }
@@ -143,16 +126,38 @@ namespace KeepItQuiet
             {
                 if (age < tick)
                 {
-                    foreach (Vector2Int value in bangs[age])
-                    {
-                        noiseGrid[value.x] -= value.y;
-                    }
+                    ClearNoise(bangs[age]);
                     bangs[age].Clear();
                 }
             }
             bangs.RemoveAll(x => x.Key < tick);
+            drawer.SetDirty();
         }
 
+        void ClearNoise(List<Vector2Int> area)
+        {
+            foreach (Vector2Int value in area)
+            {
+                var level = noiseGrid[value.x] - value.y;
+                noiseGrid[value.x] = Math.Max(0, level);
+            }
+        }
+
+        private void MakeNoise(IntVec3 center, float level, out List<Vector2Int> log)
+        {
+            log = new List<Vector2Int>();
+            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(level,56), true))
+            {
+                int str = Mathf.RoundToInt(level - tile.DistanceToSquared(center));
+                if (str > 0)
+                {
+                    int idx = map.cellIndices.CellToIndex(tile);
+                    log.Add(new Vector2Int(idx, str));
+                    noiseGrid[idx] += str;
+                }
+            }
+            drawer.SetDirty();
+        }
         //public bool ShowCell(int index)
         //{
         //    return Find.CurrentMap.GetComponent<MapComp_Noise>().noiseGrid.ContainsKey(Find.CurrentMap.cellIndices.IndexToCell(index));

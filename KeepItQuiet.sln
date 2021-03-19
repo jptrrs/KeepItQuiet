@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeepItQuiet", "Source\KeepItQuiet.csproj", "{63B85605-72D9-4766-8774-A313BA818542}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{9EE0CD85-7E44-4185-8B51-C1B8475ECE95}"
+	ProjectSection(SolutionItems) = preProject
+		Defs\Needs_Misc.xml = Defs\Needs_Misc.xml
+		Defs\Thoughts_Situation_Needs.xml = Defs\Thoughts_Situation_Needs.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

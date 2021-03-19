@@ -20,33 +20,25 @@ namespace KeepItQuiet
             }
         }
 
-        //public OutdoorsCategory CurCategory
-        //{
-        //	get
-        //	{
-        //		if (CurLevel > 0.8f)
-        //		{
-        //			return OutdoorsCategory.Free;
-        //		}
-        //		if (CurLevel > 0.6f)
-        //		{
-        //			return OutdoorsCategory.NeedFreshAir;
-        //		}
-        //		if (CurLevel > 0.4f)
-        //		{
-        //			return OutdoorsCategory.CabinFeverLight;
-        //		}
-        //		if (CurLevel > 0.2f)
-        //		{
-        //			return OutdoorsCategory.CabinFeverSevere;
-        //		}
-        //		if (CurLevel > 0.05f)
-        //		{
-        //			return OutdoorsCategory.Trapped;
-        //		}
-        //		return OutdoorsCategory.Entombed;
-        //	}
-        //}
+        public QuietCategory CurCategory
+        {
+			get
+			{
+				if (CurLevel < 0.15f)
+				{
+					return QuietCategory.DeeplyDisturbed;
+				}
+				if (CurLevel < 0.3f)
+				{
+					return QuietCategory.Disturbed;
+				}
+				if (CurLevel < 0.85)
+                {
+					return QuietCategory.Neutral;
+                }
+				return QuietCategory.Serene;
+			}
+		}
 
         public override bool ShowOnNeedList
 		{

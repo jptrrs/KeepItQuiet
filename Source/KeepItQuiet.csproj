@@ -56,9 +56,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="JobGiver_SeekQuietPlace.cs" />
     <Compile Include="QuietCategory.cs" />
+    <Compile Include="QuietDefOf.cs" />
     <Compile Include="ThoughtWorker_Quiet.cs" />
-    <Compile Include="Need_Quiet.cs" />
+    <Compile Include="Need_Silence.cs" />
     <Compile Include="NoiseUtility.cs" />
     <Compile Include="Harmony\PlaySettings_DoPlaySettingsGlobalControls.cs" />
     <None Include="Harmony\Sustainer_End.cs" />

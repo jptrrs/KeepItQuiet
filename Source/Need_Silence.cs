@@ -6,7 +6,7 @@ using Verse;
 
 namespace KeepItQuiet
 {
-	public class Need_Quiet : Need
+	public class Need_Silence : Need
 	{
         public override int GUIChangeArrow
         {
@@ -56,20 +56,29 @@ namespace KeepItQuiet
 			}
 		}
 
-		public Need_Quiet(Pawn pawn) : base(pawn)
+		private float EffectMultiplier
+        {
+            get
+            {
+				float basic = 1f;
+				if (pawn.story.traits.HasTrait(QuietDefOf.NoiseSensitive)) return basic * sensitiveFactor;
+				if (pawn.story.traits.HasTrait(QuietDefOf.NoiseTolerant)) return basic * tolerantFactor;
+				return basic;
+            }
+        }
+
+		public Need_Silence(Pawn pawn) : base(pawn)
 		{
 			threshPercents = new List<float>();
-			threshPercents.Add(0.8f);
-			threshPercents.Add(0.6f);
-			threshPercents.Add(0.4f);
-			threshPercents.Add(0.2f);
-			threshPercents.Add(0.05f);
+			threshPercents.Add(0.85f);
+			threshPercents.Add(0.3f);
+			threshPercents.Add(0.15f);
 		}
 
-		public override void SetInitialLevel()
-		{
-			CurLevel = /*1f*/0.5f;
-		}
+		//public override void SetInitialLevel()
+		//{
+		//	CurLevel = /*1f*/0.5f;
+		//}
 
 		public override void NeedInterval()
 		{
@@ -78,48 +87,27 @@ namespace KeepItQuiet
 				CurLevel = 1f;
 				return;
 			}
-			if (IsFrozen)
+			if (IsFrozen || !pawn.Spawned)
 			{
 				return;
 			}
-			int noiseLevel = pawn.Map.GetComponent<MapComp_Noise>().noiseGrid[pawn.Map.cellIndices.CellToIndex(pawn.Position)];
+			int noiseLevel = pawn.Map.GetComponent<MapComp_Noise>()?.noiseGrid[pawn.Map.cellIndices.CellToIndex(pawn.Position)] ?? 0;
 			float num;
 			if (noiseLevel > 0) num = noiseLevel * noiseLevelFactor * -1;
-			else num = 0.2f; // 25% the speed of a 8-level noise (stonecutting), but in the other direction.
+			else num = silenceGainFactor;
+			num *= EffectMultiplier;
 			num /= 200/*400*/;
 			float curLevel = CurLevel;
 			CurLevel += num;
 			lastEffectiveDelta = CurLevel - curLevel;
 			//Log.Warning($"Delta for {pawn}: {lastEffectiveDelta} (noiseLevel{noiseLevel} => {curLevel} + {num} = {CurLevel})");
-
 		}
 
-		// Token: 0x04002A09 RID: 10761
-		private const float Delta_IndoorsThickRoof = -0.45f;
-
-		// Token: 0x04002A0A RID: 10762
-		private const float Delta_OutdoorsThickRoof = -0.4f;
-
-		// Token: 0x04002A0B RID: 10763
-		private const float Delta_IndoorsThinRoof = -0.32f;
-
-		// Token: 0x04002A0C RID: 10764
-		private const float Minimum_IndoorsThinRoof = 0.2f;
-
-		// Token: 0x04002A0D RID: 10765
-		private const float Delta_OutdoorsThinRoof = 1f;
-
-		// Token: 0x04002A0E RID: 10766
-		private const float Delta_IndoorsNoRoof = 5f;
-
-		// Token: 0x04002A0F RID: 10767
-		private const float Delta_OutdoorsNoRoof = 8f;
-
-		// Token: 0x04002A10 RID: 10768
-		private const float DeltaFactor_InBed = 0.2f;
-
 		private float lastEffectiveDelta;
-		private const float noiseLevelFactor = 0.1f;
-
+		private const float
+			noiseLevelFactor = 0.1f,
+			silenceGainFactor = 0.2f, // 25% the speed of a 8-level noise (stonecutting), but in the other direction.
+			sensitiveFactor = 1.5f,
+			tolerantFactor = 0.5f;
 	}
 }

@@ -22,5 +22,18 @@ namespace KeepItQuiet
             cachedLevels.Add(soundDef, result);
             return result;
         }
+
+        public static bool IsSilentEnough(Region region, int admitted = 0)
+        {
+            MapComp_Noise mapComp = region.Map.GetComponent<MapComp_Noise>();
+            if (mapComp != null)
+            {
+                IntVec3 badCell;
+                Predicate<IntVec3> badCellFinder = (IntVec3 c) => mapComp.noiseGrid[region.Map.cellIndices.CellToIndex(c)] > admitted && !c.GetTerrain(region.Map).avoidWander;
+                return !region.TryFindRandomCellInRegion(badCellFinder, out badCell);
+            }
+            return false;
+        }
+
     }
 }

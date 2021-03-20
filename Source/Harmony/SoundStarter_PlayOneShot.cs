@@ -19,7 +19,6 @@ namespace KeepItQuiet
             if (maker != null)
             {
                 StackTrace st = new StackTrace();
-                Log.Message($"playoneshot at {maker.Cell} / stackTrace: {st.GetFrame(2).GetMethod().DeclaringType}");
                 maker.Map.GetComponent<MapComp_Noise>().AddBang(maker.Cell, NoiseUtility.GetSoundLevel(soundDef));
             }
         } 

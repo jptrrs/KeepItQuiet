@@ -22,7 +22,7 @@ namespace KeepItQuiet
                 string sound = soundDef != null ? soundDef.defName : "none";
                 //var recipeDef = ToilEffects_PlaySustainerOrSound.currentRecipe;
                 //string recipe = recipeDef != null ? (recipeDef.label ?? recipeDef.defName) : "none";
-                Log.Message($"TrySpawnSustainer at {maker.Cell} / sound: {sound}, sustain {soundDef.sustain}");
+                //Log.Message($"TrySpawnSustainer at {maker.Cell} / sound: {sound}, sustain {soundDef.sustain}");
                 //Log.Message($"TrySpawnSustainer at {maker.Cell} / stackTrace: {new StackTrace().GetFrame(2).GetMethod().DeclaringType}");
                 if (soundDef.sustain) maker.Map.GetComponent<MapComp_Noise>().AddPolluter(__result, maker.Cell, NoiseUtility.GetSoundLevel(soundDef));
             }

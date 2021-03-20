@@ -12,11 +12,11 @@ namespace KeepItQuiet
     {
 		protected override ThoughtState CurrentStateInternal(Pawn p)
 		{
-			if (p.needs.TryGetNeed<Need_Quiet>() == null)
+			if (p.needs.TryGetNeed<Need_Silence>() == null)
 			{
 				return ThoughtState.Inactive;
 			}
-			switch (p.needs.TryGetNeed<Need_Quiet>().CurCategory)
+			switch (p.needs.TryGetNeed<Need_Silence>().CurCategory)
 			{
 				case QuietCategory.DeeplyDisturbed:
 					return ThoughtState.ActiveAtStage(0);

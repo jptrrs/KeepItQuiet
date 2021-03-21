@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -11,15 +12,20 @@ namespace KeepItQuiet
     {
         public static bool toggleShow = false;
         public Dictionary<int, List<Vector2Int>> bangs;
+        public Dictionary<Thing, List<Vector2Int>> soothers;
         public int[] noiseGrid;
         public Dictionary<Sustainer, List<Vector2Int>> polluters;
         protected static CellBoolDrawer drawer;
         protected float defaultOpacity;
+        private static Color
+            noisyColor = Color.red,
+            silentColor = Color.cyan;
         private Map lastSeenMap;
         private int 
             nextUpdateTick,
             updateDelay = 60,
             noiseDecayPerLevel = 5; //60 ticks = 1 second
+        private Func<int, Color> noiseColor = (value) => value > 0 ? noisyColor : silentColor;
 
         public MapComp_Noise(Map map) : base(map)
         {
@@ -32,15 +38,17 @@ namespace KeepItQuiet
             drawer = new CellBoolDrawer(this, map.Size.x, map.Size.z);
             polluters = new Dictionary<Sustainer, List<Vector2Int>>();
             bangs = new Dictionary<int, List<Vector2Int>>();
+            soothers = new Dictionary<Thing, List<Vector2Int>>();
         }
 
         public Color Color
         {
             get
             {
-                return Color.red;
+                return Color.white;
             }
         }
+
         public static Texture2D Icon()
         {
             return ContentFinder<Texture2D>.Get("NoiseMap", true);
@@ -56,9 +64,7 @@ namespace KeepItQuiet
             if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding bang level {level} @ {center}");
             int exp = (int)(Find.TickManager.TicksGame + (level * noiseDecayPerLevel));
             if (!bangs.ContainsKey(exp)) bangs.Add(exp, new List<Vector2Int>());
-            List<Vector2Int> pollution;
-            MakeNoise(center, level, out pollution);
-            bangs[exp].AddRange(pollution);
+            bangs[exp].AddRange(MakeNoise(center, level));
         }
 
         public void AddPolluter(Sustainer source, IntVec3 center, float level = 1)
@@ -68,27 +74,29 @@ namespace KeepItQuiet
                 polluters.Add(source, new List<Vector2Int>());
             }
             if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding sustainer level {level} for {source} @ {center}");
-            List<Vector2Int> pollution;
-            MakeNoise(center, level, out pollution);
-            polluters[source].AddRange(pollution);
+            polluters[source].AddRange(MakeNoise(center, level));
+        }
+
+        public void AddSoother(Thing source, IntVec3 center, float level = 1)
+        {
+            if (!soothers.ContainsKey(source))
+            {
+                soothers.Add(source, new List<Vector2Int>());
+            }
+            if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding soothers level {level} for {source} @ {center}");
+            soothers[source].AddRange(MakeNoise(center, level, 1));
         }
 
         public bool GetCellBool(int index)
         {
-            return noiseGrid[index] > 0;
-            //return !Find.CurrentMap.fogGrid.IsFogged(index) && ShowCell(index);
+            return !Find.CurrentMap.fogGrid.IsFogged(index) && noiseGrid[index] != 0;
         }
 
         public Color GetCellExtraColor(int index)
         {
-            Color output = Color;
-            output.a = Mathf.Min(noiseGrid[index] * 0.1f, 1f);
+            Color output = noiseColor(noiseGrid[index]);
+            output.a = Mathf.Min(Math.Abs(noiseGrid[index]) * 0.1f, 1f);
             return output;
-        }
-
-        public void MakeDrawer()
-        {
-            drawer = new CellBoolDrawer(this, Find.CurrentMap.Size.x, Find.CurrentMap.Size.z);
         }
 
         public override void MapComponentTick()
@@ -135,35 +143,49 @@ namespace KeepItQuiet
             drawer.SetDirty();
         }
 
-        void ClearNoise(List<Vector2Int> area)
+        private void ClearNoise(List<Vector2Int> area)
         {
             foreach (Vector2Int value in area)
             {
-                var level = noiseGrid[value.x] - value.y;
-                noiseGrid[value.x] = Math.Max(0, level);
+                //var level = noiseGrid[value.x] - value.y;
+                //noiseGrid[value.x] = Math.Max(0, level);
+                noiseGrid[value.x] -= value.y;
             }
         }
 
-        private void MakeNoise(IntVec3 center, float level, out List<Vector2Int> log)
+        public void ClearSoother(Thing source)
         {
-            log = new List<Vector2Int>();
-            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(level,56), true))
+            if (soothers.ContainsKey(source))
             {
-                int str = Mathf.RoundToInt(level - tile.DistanceToSquared(center));
+                ClearNoise(soothers[source]);
+                soothers[source].Clear();
+                drawer.SetDirty();
+            }
+        }
+
+        private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0)
+        {
+            var result = new List<Vector2Int>();
+            int levelMod = (int)Mathf.Abs(level);
+            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), true))
+            {
+                int str = Mathf.RoundToInt(levelMod - tile.DistanceToSquared(center));
+                if (maxLevel > 0 && str > maxLevel) str = maxLevel; 
                 if (str > 0)
                 {
+                    if (level < 0) str *= -1;
                     int idx = map.cellIndices.CellToIndex(tile);
-                    log.Add(new Vector2Int(idx, str));
-                    noiseGrid[idx] += str;
+                    try
+                    {
+                        noiseGrid[idx] += str;
+                        result.Add(new Vector2Int(idx, str));
+                    }
+                    catch { };
                 }
             }
             drawer.SetDirty();
+            return result;
         }
-
-        //public bool ShowCell(int index)
-        //{
-        //    return Find.CurrentMap.GetComponent<MapComp_Noise>().noiseGrid.ContainsKey(Find.CurrentMap.cellIndices.IndexToCell(index));
-        //}
 
         //public void Update()
         //{

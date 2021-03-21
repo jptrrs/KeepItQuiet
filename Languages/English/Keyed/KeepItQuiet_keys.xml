@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <KeepItQuiet>Keep It Quiet</KeepItQuiet>
+  <NoiseMap>Toggle noise map.</NoiseMap>
+  <noiseDecaySpeed>Silence need decay speed</noiseDecaySpeed>
+  <noiseDecaySpeedDesc>The speed in which colonists get annoyed by the surrounding noise.</noiseDecaySpeedDesc>
+</LanguageData>

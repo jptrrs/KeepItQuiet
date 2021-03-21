@@ -60,7 +60,7 @@ namespace KeepItQuiet
         {
             get
             {
-				float basic = 1f;
+				float basic = KeepQuietSettings.noiseDecaySpeed;
 				if (pawn.story.traits.HasTrait(QuietDefOf.NoiseSensitive)) return basic * sensitiveFactor;
 				if (pawn.story.traits.HasTrait(QuietDefOf.NoiseTolerant)) return basic * tolerantFactor;
 				return basic;
@@ -75,10 +75,6 @@ namespace KeepItQuiet
 			threshPercents.Add(0.15f);
 		}
 
-		//public override void SetInitialLevel()
-		//{
-		//	CurLevel = /*1f*/0.5f;
-		//}
 
 		public override void NeedInterval()
 		{

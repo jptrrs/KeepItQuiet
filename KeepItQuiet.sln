@@ -13,6 +13,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{6667B02E-3
 		Defs\Traits.xml = Defs\Traits.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{5DD7ACC8-1975-4790-BED3-E7B3BF3937EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{B0EE1B9F-B934-4A47-9C71-76BE53DC98C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{C9FD8C67-5C9E-49DD-B3C0-6316DDB78430}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\English\Keyed\KeepItQuiet_keys.xml = Languages\English\Keyed\KeepItQuiet_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4F3826F9-425D-4CD0-BC73-A6BB1345F688}"
+	ProjectSection(SolutionItems) = preProject
+		About\About.xml = About\About.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +40,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0EE1B9F-B934-4A47-9C71-76BE53DC98C0} = {5DD7ACC8-1975-4790-BED3-E7B3BF3937EC}
+		{C9FD8C67-5C9E-49DD-B3C0-6316DDB78430} = {B0EE1B9F-B934-4A47-9C71-76BE53DC98C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B2F886B-FE7A-44FB-8D90-B142992FFEA3}

@@ -56,6 +56,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Harmony\ThingWithComps_DeSpawn.cs" />
+    <Compile Include="Harmony\ThingWithComps_SpawnSetup.cs" />
     <Compile Include="JobGiver_SeekQuietPlace.cs" />
     <Compile Include="QuietCategory.cs" />
     <Compile Include="QuietDefOf.cs" />
@@ -63,8 +65,7 @@
     <Compile Include="Need_Silence.cs" />
     <Compile Include="NoiseUtility.cs" />
     <Compile Include="Harmony\PlaySettings_DoPlaySettingsGlobalControls.cs" />
-    <None Include="Harmony\Sustainer_End.cs" />
-    <None Include="Harmony\ToilEffects_PlaySustainerOrSound.cs" />
+    <Compile Include="Harmony\ToilEffects_PlaySustainerOrSound.cs" />
     <Compile Include="Harmony\SoundStarter_TrySpawnSustainer.cs" />
     <Compile Include="ModBaseKeepItQuiet.cs" />
     <Compile Include="Harmony\SoundStarter_PlayOneShot.cs" />

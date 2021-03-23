@@ -167,7 +167,7 @@ namespace KeepItQuiet
         {
             var result = new List<Vector2Int>();
             int levelMod = (int)Mathf.Abs(level);
-            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), true))
+            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), KeepQuietSettings.selfAnnoy))
             {
                 int str = Mathf.RoundToInt(levelMod - tile.DistanceToSquared(center));
                 if (maxLevel > 0 && str > maxLevel) str = maxLevel; 

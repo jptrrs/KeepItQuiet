@@ -30,15 +30,19 @@ namespace KeepItQuiet
 
     public class KeepQuietSettings : ModSettings
     {
-        private const float noiseDecaySpeedDefault = 1f; //indoors accelerated degradation when not under windows
+        private const float
+            silenceDecaySpeedDefault = 1f,
+            silenceGainSpeedDefault = 0.2f;
 
-        public static float noiseDecaySpeed = noiseDecaySpeedDefault;
+        public static float 
+            silenceDecaySpeed = silenceDecaySpeedDefault,
+            silenceGainSpeed = silenceGainSpeedDefault;
 
         //public const float beautySensitivityReductionDefault = 0.25f; // zero for vanilla
 
         //public static float BeautySensitivityReduction = beautySensitivityReductionDefault;
 
-        //public static bool IsBeautyOn = false;
+        public static bool selfAnnoy = false;
 
         //public static bool LinkWindows = true;
 
@@ -48,10 +52,18 @@ namespace KeepItQuiet
         {
             Listing_Standard listing = new Listing_Standard();
             listing.Begin(inRect);
-            string label = "noiseDecaySpeed".Translate() + ": " + noiseDecaySpeed.ToStringDecimalIfSmall() + "x";
-            string desc = ("noiseDecaySpeedDesc").Translate();
+            string label = "silenceDecaySpeed".Translate() + $": {silenceDecaySpeed.ToStringDecimalIfSmall()}x";
+            string desc = "silenceDecaySpeedDesc".Translate();
             listing.Label(label, -1f, desc);
-            noiseDecaySpeed = listing.Slider(noiseDecaySpeed, -10f, 10f);
+            silenceDecaySpeed = listing.Slider(silenceDecaySpeed, 0f, 10f);
+            string label2 = "silenceGainSpeed".Translate() + $": {silenceGainSpeed.ToStringDecimalIfSmall()}x";
+            string desc2 = ("silenceGainSpeedDesc").Translate();
+            listing.Label(label2, -1f, desc2);
+            silenceGainSpeed = listing.Slider(silenceGainSpeed, 0f, 10f);
+            listing.Gap(12f);
+            listing.CheckboxLabeled("selfAnnoy".Translate(), ref selfAnnoy);
+
+
             //if (IsBeautyOn)
             //{
             //    listing.Gap(12f);
@@ -76,20 +88,20 @@ namespace KeepItQuiet
             listing.Gap(12f);
             if (listing.ButtonText("Reset", null))
             {
-                //BeautySensitivityReduction = 0.25f;
-                noiseDecaySpeed = noiseDecaySpeedDefault;
-                //LinkWindows = true;
-                //LinkVents = true;
+                silenceDecaySpeed = silenceDecaySpeedDefault;
+                silenceGainSpeed = silenceGainSpeedDefault;
+                selfAnnoy = false;
             }
             listing.End();
         }
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref noiseDecaySpeed, "noiseDecaySpeed", noiseDecaySpeedDefault);
+            Scribe_Values.Look(ref silenceDecaySpeed, "silenceDecaySpeed", silenceDecaySpeedDefault);
+            Scribe_Values.Look(ref silenceGainSpeed, "silenceGainSpeed", silenceGainSpeedDefault);
             //Scribe_Values.Look(ref BeautySensitivityReduction, "ModifiedBeautyImpactFactor", beautySensitivityReductionDefault);
             //Scribe_Values.Look(ref LinkWindows, "LinkWindows", true);
-            //Scribe_Values.Look(ref LinkVents, "LinkVents", true);
+            Scribe_Values.Look(ref selfAnnoy, "selfAnnoy", false);
             base.ExposeData();
         }
     }

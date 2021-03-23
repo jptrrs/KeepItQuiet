@@ -2,6 +2,9 @@
 <LanguageData>
   <KeepItQuiet>Keep It Quiet</KeepItQuiet>
   <NoiseMap>Toggle noise map.</NoiseMap>
-  <noiseDecaySpeed>Silence need decay speed</noiseDecaySpeed>
-  <noiseDecaySpeedDesc>The speed in which colonists get annoyed by the surrounding noise.</noiseDecaySpeedDesc>
+  <silenceDecaySpeed>Silence need decay speed</silenceDecaySpeed>
+  <silenceDecaySpeedDesc>The speed by which colonists get annoyed by the surrounding noise.</silenceDecaySpeedDesc>
+  <silenceGainSpeed>Silence need gain speed</silenceGainSpeed>
+  <silenceGainSpeedDesc>The speed by which colonists refill the need bar when in silence.</silenceGainSpeedDesc>
+  <selfAnnoy>Pawns are annoyed by the sounds they produce themselves.</selfAnnoy>
 </LanguageData>

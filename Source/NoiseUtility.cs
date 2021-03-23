@@ -15,7 +15,11 @@ namespace KeepItQuiet
         {
             if (cachedLevels.ContainsKey(soundDef)) return cachedLevels[soundDef];
             float result = 1f;
-            if (soundDef.subSounds.Any(x => x.volumeRange != null))
+            if (soundDef is NoisySoundDef noisyDef)
+            {
+                result = noisyDef.overrideNoiseVolume;
+            }
+            else if (soundDef.subSounds.Any(x => x.volumeRange != null))
             {
                 result = soundDef.subSounds.Select(x => x.volumeRange.Average).Aggregate((a, b) => a > b ? a : b);
             }

@@ -9,7 +9,8 @@ namespace KeepItQuiet
     {
         public static void Prefix(ThingWithComps __instance)
         {
-            if (__instance is Plant)
+            CompSoother comp = __instance.TryGetComp<CompSoother>();
+            if (comp != null)
             {
                 MapComp_Noise noiseMap = __instance.Map.GetComponent<MapComp_Noise>();
                 if (noiseMap != null)
@@ -17,6 +18,14 @@ namespace KeepItQuiet
                     noiseMap.ClearSoother(__instance);
                 }
             }
+            //if (__instance is Plant)
+            //{
+            //    MapComp_Noise noiseMap = __instance.Map.GetComponent<MapComp_Noise>();
+            //    if (noiseMap != null)
+            //    {
+            //        noiseMap.ClearSoother(__instance);
+            //    }
+            //}
         }
     }
 }

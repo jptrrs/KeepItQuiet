@@ -77,14 +77,14 @@ namespace KeepItQuiet
             polluters[source].AddRange(MakeNoise(center, level));
         }
 
-        public void AddSoother(Thing source, IntVec3 center, float level = 1)
+        public void AddSoother(Thing source, IntVec3 center, float level = 1, int maxLevel = 1)
         {
             if (!soothers.ContainsKey(source))
             {
                 soothers.Add(source, new List<Vector2Int>());
             }
             if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding soothers level {level} for {source} @ {center}");
-            soothers[source].AddRange(MakeNoise(center, level, 1));
+            soothers[source].AddRange(MakeNoise(center, level * -1, maxLevel));
         }
 
         public bool GetCellBool(int index)
@@ -170,7 +170,7 @@ namespace KeepItQuiet
             foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), KeepQuietSettings.selfAnnoy))
             {
                 int str = Mathf.RoundToInt(levelMod - tile.DistanceToSquared(center));
-                if (maxLevel > 0 && str > maxLevel) str = maxLevel; 
+                if (maxLevel > 0 && str > maxLevel) str = maxLevel;
                 if (str > 0)
                 {
                     if (level < 0) str *= -1;

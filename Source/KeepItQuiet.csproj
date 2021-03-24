@@ -60,6 +60,7 @@
     <None Include="Harmony\ThingWithComps_SpawnSetup.cs" />
     <Compile Include="CompProperties_Soother.cs" />
     <Compile Include="CompSoother.cs" />
+    <Compile Include="Harmony\Pawn_JobTracker_CleanupCurrentJob.cs" />
     <Compile Include="JobGiver_SeekQuietPlace.cs" />
     <Compile Include="NoisySoundDef.cs" />
     <Compile Include="QuietCategory.cs" />
@@ -68,7 +69,6 @@
     <Compile Include="Need_Silence.cs" />
     <Compile Include="NoiseUtility.cs" />
     <Compile Include="Harmony\PlaySettings_DoPlaySettingsGlobalControls.cs" />
-    <None Include="Harmony\ToilEffects_PlaySustainerOrSound.cs" />
     <Compile Include="Harmony\SoundStarter_TrySpawnSustainer.cs" />
     <Compile Include="ModBaseKeepItQuiet.cs" />
     <Compile Include="Harmony\SoundStarter_PlayOneShot.cs" />

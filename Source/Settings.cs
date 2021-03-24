@@ -32,7 +32,7 @@ namespace KeepItQuiet
     {
         private const float
             silenceDecaySpeedDefault = 1f,
-            silenceGainSpeedDefault = 0.2f;
+            silenceGainSpeedDefault = 1f;
 
         public static float 
             silenceDecaySpeed = silenceDecaySpeedDefault,

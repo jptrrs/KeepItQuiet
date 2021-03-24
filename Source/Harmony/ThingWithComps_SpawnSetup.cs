@@ -9,26 +9,14 @@ namespace KeepItQuiet
     {
         public static void Postfix(ThingWithComps __instance, Map map)
         {
-            CompSoother comp = __instance.TryGetComp<CompSoother>();
-            if (comp != null)
+            if (__instance is Plant)
             {
-                Log.Message($"adding soother for {__instance}");
-
                 MapComp_Noise noiseMap = map.GetComponent<MapComp_Noise>();
                 if (noiseMap != null)
                 {
-                    noiseMap.AddSoother(__instance, __instance.Position, comp.Props.volume, comp.Props.maxLevel);
+                    noiseMap.AddSoother(__instance, __instance.Position, -3);
                 }
             }
-
-            //if (__instance is Plant)
-            //{
-            //    MapComp_Noise noiseMap = map.GetComponent<MapComp_Noise>();
-            //    if (noiseMap != null)
-            //    {
-            //        noiseMap.AddSoother(__instance, __instance.Position, -3);
-            //    }
-            //}
         }
     }
 }

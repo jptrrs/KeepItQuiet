@@ -8,6 +8,7 @@ using RimWorld;
 using Verse;
 using Verse.Sound;
 using UnityEngine;
+using Verse.AI;
 
 namespace KeepItQuiet
 {
@@ -17,9 +18,15 @@ namespace KeepItQuiet
         public static void Postfix(SoundDef soundDef, SoundInfo info, Sustainer __result)
         {
             TargetInfo maker = info.Maker;
-            if (maker != null)
+            if (maker != null && soundDef.sustain)
             {
-                if (soundDef.sustain) maker.Map.GetComponent<MapComp_Noise>().AddPolluter(__result, maker.Cell, NoiseUtility.GetSoundLevel(soundDef));
+                int level = (int)NoiseUtility.GetSoundLevel(soundDef);
+                Pawn actor = null;
+                if (!KeepQuietSettings.selfAnnoy && maker.Thing != null && maker.Thing is Pawn pawn && pawn.RaceProps.Humanlike)
+                {
+                    actor = pawn;
+                }
+                maker.Map.GetComponent<MapComp_Noise>().AddPolluter(__result, maker.Cell, level, actor);
             }
         }
 

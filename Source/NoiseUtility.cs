@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Verse;
+using Verse.AI;
 
 namespace KeepItQuiet
 {
     class NoiseUtility
     {
         private static Dictionary<SoundDef, float> cachedLevels = new Dictionary<SoundDef, float>();
+        public static Dictionary<Toil, int> noiseByToil = new Dictionary<Toil, int>();
 
         public static float GetSoundLevel(SoundDef soundDef)
         {

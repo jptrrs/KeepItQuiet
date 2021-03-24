@@ -11,7 +11,7 @@ namespace KeepItQuiet
 	{
         private const float
             noiseLevelFactor = 0.1f,
-            //silenceGainFactor = 0.2f, // 25% the speed of a 8-level noise (stonecutting), but in the other direction.
+            silenceGainBaseOffset = 0.2f, // 25% the speed of a 8-level noise (stonecutting), but in the other direction.
             sensitiveFactor = 2f,
             tolerantFactor = 0.5f;
 
@@ -87,22 +87,50 @@ namespace KeepItQuiet
 
 		public override void NeedInterval()
 		{
+            //abort if unapplicable
 			if (Disabled)
 			{
 				CurLevel = 1f;
 				return;
 			}
             if (MapComp == null || IsFrozen || !pawn.Spawned) return;
+
+            //read noise level from map
 			int noiseLevel = MapComp.noiseGrid[pawn.Map.cellIndices.CellToIndex(pawn.Position)];
-            if (noiseLevel < 1 && !CheckAroundForSilence()) return;
-			float num;
-			if (noiseLevel > 0) num = noiseLevel * noiseLevelFactor * noiseEffectMultiplier * -1;
-			else num = silenceGainSpeed;
+
+            //offset noise from current job, if necessary
+            if (noiseLevel > 0 && !selfAnnoy && MapComp.currentJobNoise.ContainsKey(pawn))
+            {
+                noiseLevel -= MapComp.currentJobNoise[pawn];
+                //abort if floored
+                if (noiseLevel == 0)
+                {
+                    lastEffectiveDelta = 0;
+                    return;
+                }
+            }
+
+            //estabilish adequate response
+            float num = noiseLevel * noiseLevelFactor;
+
+            //if noise is to increase, apply custom setting
+            if (noiseLevel > 0) num *= noiseEffectMultiplier;
+
+            //if silent, setup basic gain and apply custom setting.
+            else
+            {
+                num -= silenceGainBaseOffset;
+                num *= silenceGainSpeed;
+            }
+
+            //reduce for this frame
 			num /= 200/*400*/;
+
+            //apply to bar, expecting to subtract noise and add gains.
 			float curLevel = CurLevel;
-			CurLevel += num;
+			CurLevel -= num;
 			lastEffectiveDelta = CurLevel - curLevel;
-			//Log.Warning($"Delta for {pawn}: {lastEffectiveDelta} (noiseLevel{noiseLevel} => {curLevel} + {num} = {CurLevel})");
+			//Log.Warning($"Delta for {pawn}: {lastEffectiveDelta} (noiseLevel={noiseLevel} => {curLevel} {num.ToStringByStyle(ToStringStyle.FloatMaxThree, ToStringNumberSense.Offset)} = {CurLevel})");
 		}
 
         private bool CheckAroundForSilence()

@@ -15,6 +15,7 @@ namespace KeepItQuiet
         public Dictionary<Thing, List<Vector2Int>> soothers;
         public int[] noiseGrid;
         public Dictionary<Sustainer, List<Vector2Int>> polluters;
+        public Dictionary<Pawn, int> currentJobNoise;
         protected static CellBoolDrawer drawer;
         protected float defaultOpacity;
         private static Color
@@ -39,6 +40,7 @@ namespace KeepItQuiet
             polluters = new Dictionary<Sustainer, List<Vector2Int>>();
             bangs = new Dictionary<int, List<Vector2Int>>();
             soothers = new Dictionary<Thing, List<Vector2Int>>();
+            currentJobNoise = new Dictionary<Pawn, int>();
         }
 
         public Color Color
@@ -67,14 +69,23 @@ namespace KeepItQuiet
             bangs[exp].AddRange(MakeNoise(center, level));
         }
 
-        public void AddPolluter(Sustainer source, IntVec3 center, float level = 1)
+        public void AddPolluter(Sustainer source, IntVec3 center, int level = 1, Pawn actor = null)
         {
+            if (Prefs.LogVerbose)
+            {
+                string sourceName = actor != null ? actor.ToString() : source.ToString();
+                Log.Message($"[KeepItQuiet] Adding sustainer level {level} for {sourceName} @ {center}");
+            }
             if (!polluters.ContainsKey(source))
             {
                 polluters.Add(source, new List<Vector2Int>());
             }
-            if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding sustainer level {level} for {source} @ {center}");
             polluters[source].AddRange(MakeNoise(center, level));
+            if (!KeepQuietSettings.selfAnnoy && actor != null)
+            {
+                if (!currentJobNoise.ContainsKey(actor)) currentJobNoise.Add(actor, level);
+                else currentJobNoise[actor] = level;
+            }
         }
 
         public void AddSoother(Thing source, IntVec3 center, float level = 1, int maxLevel = 1)
@@ -167,7 +178,7 @@ namespace KeepItQuiet
         {
             var result = new List<Vector2Int>();
             int levelMod = (int)Mathf.Abs(level);
-            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), KeepQuietSettings.selfAnnoy))
+            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), true))
             {
                 int str = Mathf.RoundToInt(levelMod - tile.DistanceToSquared(center));
                 if (maxLevel > 0 && str > maxLevel) str = maxLevel;

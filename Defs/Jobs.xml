@@ -3,7 +3,7 @@
   <JobDef>
     <defName>GotoQuietPlace</defName>
     <driverClass>JobDriver_Goto</driverClass>
-    <reportString>seeking a quiet place for respite.</reportString>
+    <reportString>Seeking a quiet place for respite.</reportString>
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
 </Defs>

@@ -6,7 +6,7 @@
     <degreeDatas>
       <li>
         <label>noise sensitive</label>
-        <description>{PAWN_nameDef} is more susceptible to noise pollution than the others.</description>
+        <description>{PAWN_nameDef} is particularly susceptible to noise pollution.</description>
       </li>
     </degreeDatas>
   </TraitDef>
@@ -16,7 +16,7 @@
     <degreeDatas>
       <li>
         <label>noise tolerant</label>
-        <description>{PAWN_nameDef} is more tolernt to noise pollution than the others.</description>
+        <description>{PAWN_nameDef} isn't much bothered by noise.</description>
       </li>
     </degreeDatas>
   </TraitDef>

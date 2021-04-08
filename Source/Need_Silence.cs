@@ -11,7 +11,7 @@ namespace KeepItQuiet
 	{
         private const float
             noiseLevelFactor = 0.1f,
-            silenceGainBaseOffset = 0.2f, // 25% the speed of a 8-level noise (stonecutting), but in the other direction.
+            silenceGainBaseOffset = 0.8f, // The speed of a 8-level noise (stonecutting), but in the other direction.
             sensitiveFactor = 2f,
             tolerantFactor = 0.5f;
 
@@ -124,13 +124,12 @@ namespace KeepItQuiet
             }
 
             //reduce for this frame
-			num /= 200/*400*/;
+			num /= 200;
 
             //apply to bar, expecting to subtract noise and add gains.
 			float curLevel = CurLevel;
 			CurLevel -= num;
 			lastEffectiveDelta = CurLevel - curLevel;
-			//Log.Warning($"Delta for {pawn}: {lastEffectiveDelta} (noiseLevel={noiseLevel} => {curLevel} {num.ToStringByStyle(ToStringStyle.FloatMaxThree, ToStringNumberSense.Offset)} = {CurLevel})");
 		}
 
         private bool CheckAroundForSilence()

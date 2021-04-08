@@ -4,6 +4,7 @@ using Verse;
 
 namespace KeepItQuiet
 {
+    //Remove soothing effect when source object de-spawns
     [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.DeSpawn))]
     public static class ThingWithComps_DeSpawn
     {
@@ -18,14 +19,6 @@ namespace KeepItQuiet
                     noiseMap.ClearSoother(__instance);
                 }
             }
-            //if (__instance is Plant)
-            //{
-            //    MapComp_Noise noiseMap = __instance.Map.GetComponent<MapComp_Noise>();
-            //    if (noiseMap != null)
-            //    {
-            //        noiseMap.ClearSoother(__instance);
-            //    }
-            //}
         }
     }
 }

@@ -4,6 +4,7 @@ using Verse;
 
 namespace KeepItQuiet
 {
+    //Injects the toggle for the noise map
     [HarmonyPatch(typeof(PlaySettings), nameof(PlaySettings.DoPlaySettingsGlobalControls))]
     public static class PlaySettings_DoPlaySettingsGlobalControls
     {

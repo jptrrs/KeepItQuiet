@@ -11,6 +11,7 @@ using Verse.AI;
 
 namespace KeepItQuiet
 {
+    //Clean up job noise when it's finished
     [HarmonyPatch(typeof(Pawn_JobTracker), "CleanupCurrentJob")]
     class Pawn_JobTracker_CleanupCurrentJob
     {

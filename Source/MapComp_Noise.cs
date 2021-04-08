@@ -22,10 +22,10 @@ namespace KeepItQuiet
             noisyColor = Color.red,
             silentColor = Color.cyan;
         private Map lastSeenMap;
-        private int 
+        private int
             nextUpdateTick,
-            updateDelay = 60,
-            noiseDecayPerLevel = 5; //60 ticks = 1 second
+            updateDelay = 60;
+            //noiseDecayPerLevel = 10; //60 ticks = 1 second
         private Func<int, Color> noiseColor = (value) => value > 0 ? noisyColor : silentColor;
 
         public MapComp_Noise(Map map) : base(map)
@@ -64,7 +64,7 @@ namespace KeepItQuiet
         public void AddBang(IntVec3 center, float level = 1)
         {
             if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding bang level {level} @ {center}");
-            int exp = (int)(Find.TickManager.TicksGame + (level * noiseDecayPerLevel));
+            int exp = (int)(Find.TickManager.TicksGame + (level * noiseDecayPerLevel.Evaluate(level)));
             if (!bangs.ContainsKey(exp)) bangs.Add(exp, new List<Vector2Int>());
             bangs[exp].AddRange(MakeNoise(center, level));
         }
@@ -198,30 +198,20 @@ namespace KeepItQuiet
             return result;
         }
 
-        //public void Update()
-        //{
-        //    if (toggleShow)
-        //    {
-        //        if (drawer == null)
-        //        {
-        //            MakeDrawer();
-        //        }
-        //        drawer.MarkForDraw();
-        //        //from heatmap
-        //        int ticksGame = Find.TickManager.TicksGame;
-        //        if (nextUpdateTick == 0 || ticksGame >= nextUpdateTick || Find.CurrentMap != lastSeenMap)
-        //        {
-        //            drawer.SetDirty();
-        //            nextUpdateTick = ticksGame + updateDelay;
-        //            lastSeenMap = Find.CurrentMap;
-        //        }//
-        //        drawer.CellBoolDrawerUpdate();
-        //        //dirty = false;
-        //        return;
-        //    }
-        //    drawer = null;
-        //}
-
-
+        public static readonly SimpleCurve noiseDecayPerLevel = new SimpleCurve
+        {
+            {
+                new CurvePoint(1f, 20f),
+                true
+            },
+            {
+                new CurvePoint(10f, 10f),
+                true
+            },
+            {
+                new CurvePoint(50f, 5f),
+                true
+            }
+        };
     }
 }

@@ -4,6 +4,7 @@ using Verse;
 
 namespace KeepItQuiet
 {
+    //Add soothing effect when source object spawns
     [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.SpawnSetup))]
     public static class ThingWithComps_SpawnSetup
     {

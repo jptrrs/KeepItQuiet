@@ -12,6 +12,7 @@ using Verse.AI;
 
 namespace KeepItQuiet
 {
+    //Adds the noise for continuing sounds.
     [HarmonyPatch(typeof(SoundStarter), nameof(SoundStarter.TrySpawnSustainer))]
     class SoundStarter_TrySpawnSustainer
     {

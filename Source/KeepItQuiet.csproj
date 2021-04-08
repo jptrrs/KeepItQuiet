@@ -61,6 +61,7 @@
     <Compile Include="CompProperties_Soother.cs" />
     <Compile Include="CompSoother.cs" />
     <Compile Include="Harmony\Pawn_JobTracker_CleanupCurrentJob.cs" />
+    <Compile Include="Harmony\Pawn_InteractionsTracker_TryInteractWith.cs" />
     <Compile Include="JobGiver_SeekQuietPlace.cs" />
     <Compile Include="NoisySoundDef.cs" />
     <Compile Include="QuietCategory.cs" />

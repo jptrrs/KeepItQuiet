@@ -10,6 +10,7 @@ using Verse.Sound;
 
 namespace KeepItQuiet
 {
+    //Adds noise for sounds played one time.
     [HarmonyPatch(typeof(SoundStarter), nameof(SoundStarter.PlayOneShot))]
     class SoundStarter_PlayOneShot
     {

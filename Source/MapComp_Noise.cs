@@ -22,10 +22,7 @@ namespace KeepItQuiet
             noisyColor = Color.red,
             silentColor = Color.cyan;
         private Map lastSeenMap;
-        private int
-            nextUpdateTick,
-            updateDelay = 60;
-            //noiseDecayPerLevel = 10; //60 ticks = 1 second
+        private const int updateDelay = 60; //60 ticks = 1 second
         private Func<int, Color> noiseColor = (value) => value > 0 ? noisyColor : silentColor;
 
         public MapComp_Noise(Map map) : base(map)
@@ -73,14 +70,14 @@ namespace KeepItQuiet
         {
             if (Prefs.LogVerbose)
             {
-                string sourceName = actor != null ? actor.ToString() : source.ToString();
+                string sourceName = actor != null ? actor.ToString() : source.def.defName;
                 Log.Message($"[KeepItQuiet] Adding sustainer level {level} for {sourceName} @ {center}");
             }
             if (!polluters.ContainsKey(source))
             {
                 polluters.Add(source, new List<Vector2Int>());
             }
-            polluters[source].AddRange(MakeNoise(center, level));
+            polluters[source].AddRange(MakeNoise(center, level, 0, actor == null));
             if (!KeepQuietSettings.selfAnnoy && actor != null)
             {
                 if (!currentJobNoise.ContainsKey(actor)) currentJobNoise.Add(actor, level);
@@ -114,10 +111,9 @@ namespace KeepItQuiet
         {
             base.MapComponentTick();
             int ticksGame = Find.TickManager.TicksGame;
-            if (nextUpdateTick == 0 || ticksGame >= nextUpdateTick || Find.CurrentMap != lastSeenMap)
+            if (ticksGame % updateDelay == 0 || Find.CurrentMap != lastSeenMap)
             {
                 Silence(ticksGame);
-                nextUpdateTick = ticksGame + updateDelay;
                 lastSeenMap = Find.CurrentMap;
             }
         }
@@ -133,22 +129,16 @@ namespace KeepItQuiet
 
         public void Silence(int tick)
         {
-            foreach (Sustainer sust in polluters.Keys)
+            foreach (Sustainer sust in polluters.Keys.Where(x => x.Ended))
             {
-                if (sust.Ended)
-                {
-                    ClearNoise(polluters[sust]);
-                    polluters[sust].Clear();
-                }
+                ClearNoise(polluters[sust]);
+                polluters[sust].Clear();
             }
             polluters.RemoveAll(x => x.Value.NullOrEmpty());
-            foreach (int age in bangs.Keys)
+            foreach (int age in bangs.Keys.Where(x => x < tick))
             {
-                if (age < tick)
-                {
-                    ClearNoise(bangs[age]);
-                    bangs[age].Clear();
-                }
+                ClearNoise(bangs[age]);
+                bangs[age].Clear();
             }
             bangs.RemoveAll(x => x.Key < tick);
             drawer.SetDirty();
@@ -158,8 +148,6 @@ namespace KeepItQuiet
         {
             foreach (Vector2Int value in area)
             {
-                //var level = noiseGrid[value.x] - value.y;
-                //noiseGrid[value.x] = Math.Max(0, level);
                 noiseGrid[value.x] -= value.y;
             }
         }
@@ -174,13 +162,17 @@ namespace KeepItQuiet
             }
         }
 
-        private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0)
+        private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0, bool spread = false)
         {
             var result = new List<Vector2Int>();
-            int levelMod = (int)Mathf.Abs(level);
-            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, Mathf.Min(levelMod,56), true))
+            var levelMod = Mathf.Abs(level); // because there is such a thing as "negative noise".
+            float radius = Mathf.Min(levelMod, 56) / (spread ? 1 : 2);
+            foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, radius, true).Where(c => c.InBounds(map)))
             {
-                int str = Mathf.RoundToInt(levelMod - tile.DistanceToSquared(center));
+                //float decay = /*spread ? tile.DistanceTo(center) :*/ tile.DistanceToSquared(center) / levelMod;
+                //int str = Mathf.RoundToInt(levelMod - decay);
+                var dist = tile.DistanceTo(center);
+                float str = NoiseSpread(levelMod, dist, spread);
                 if (maxLevel > 0 && str > maxLevel) str = maxLevel;
                 if (str > 0)
                 {
@@ -188,14 +180,27 @@ namespace KeepItQuiet
                     int idx = map.cellIndices.CellToIndex(tile);
                     try
                     {
-                        noiseGrid[idx] += str;
-                        result.Add(new Vector2Int(idx, str));
+                        var strInt = (int)str;
+                        noiseGrid[idx] += strInt;
+                        result.Add(new Vector2Int(idx, strInt));
                     }
-                    catch { };
+                    catch (Exception e)
+                    {
+                        Log.Warning("Error at MakeNoise: " + e.Message);
+                    }
                 }
             }
             drawer.SetDirty();
             return result;
+        }
+
+        private float NoiseSpread(float level, float dist, bool spread)
+        {
+            //spread:       f(x) = (x/4)*(1+cos(dist*pi/x))      peak is half the level, reach equals level
+            //no spread:    f(x) = (x/2)*(1+cos(dist*pi/(x/2)))  peak equals level, reaches half the level
+            int xFactor = spread ? 1 : 2;
+            int yFactor = spread ? 4 : 2;
+            return (level / yFactor) * (1 + Mathf.Cos(dist * Mathf.PI / (level / xFactor)));
         }
 
         public static readonly SimpleCurve noiseDecayPerLevel = new SimpleCurve

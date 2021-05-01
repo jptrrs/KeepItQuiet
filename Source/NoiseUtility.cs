@@ -13,7 +13,7 @@ namespace KeepItQuiet
         private static Dictionary<SoundDef, float> cachedLevels = new Dictionary<SoundDef, float>();
         public static Dictionary<Toil, int> noiseByToil = new Dictionary<Toil, int>();
 
-        public static float GetSoundLevel(SoundDef soundDef)
+        public static float GetSoundLevel(SoundDef soundDef, bool maxLevel = false)
         {
             if (cachedLevels.ContainsKey(soundDef)) return cachedLevels[soundDef];
             float result = 1f;
@@ -23,7 +23,7 @@ namespace KeepItQuiet
             }
             else if (soundDef.subSounds.Any(x => x.volumeRange != null))
             {
-                result = soundDef.subSounds.Select(x => x.volumeRange.Average).Aggregate((a, b) => a > b ? a : b);
+                result = soundDef.subSounds.Select(x => maxLevel? x.volumeRange.TrueMax : x.volumeRange.Average).Aggregate((a, b) => a > b ? a : b);
             }
             cachedLevels.Add(soundDef, result);
             return result;

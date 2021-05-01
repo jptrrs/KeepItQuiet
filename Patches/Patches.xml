@@ -8,6 +8,7 @@
     </value>
   </Operation>
 
+  <!--Making Anima plants soothing-->
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -30,6 +31,42 @@
             </li>
           </comps>
         </value>
+      </li>
+    </operations>
+  </Operation>
+
+  <!--Adjusting vanilla soundDefs noise-->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/SoundDef[defName="FireBurning"]</xpath>
+        <value>
+          <overrideNoiseVolume>6</overrideNoiseVolume>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/SoundDef[defName="Recipe_MakeStoneBlocks"]</xpath>
+        <value>
+          <overrideNoiseVolume>16</overrideNoiseVolume>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/SoundDef[defName="Recipe_ButcherCorpseFlesh"]</xpath>
+        <value>
+          <overrideNoiseVolume>8</overrideNoiseVolume>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/SoundDef[defName="Interact_Research"]</xpath>
+        <value>
+          <overrideNoiseVolume>4</overrideNoiseVolume>
+        </value>
+      </li>
+      <li Class="PatchOperationAttributeAdd">
+        <xpath>/Defs/SoundDef/overrideNoiseVolume/..</xpath>
+        <attribute>Class</attribute>
+        <value>KeepItQuiet.NoisySoundDef</value>
       </li>
     </operations>
   </Operation>

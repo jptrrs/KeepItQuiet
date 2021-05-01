@@ -77,7 +77,8 @@ namespace KeepItQuiet
             {
                 polluters.Add(source, new List<Vector2Int>());
             }
-            polluters[source].AddRange(MakeNoise(center, level, 0, actor == null));
+            bool persistent = actor == null;
+            polluters[source].AddRange(MakeNoise(center, level, 0, persistent, persistent));
             if (!KeepQuietSettings.selfAnnoy && actor != null)
             {
                 if (!currentJobNoise.ContainsKey(actor)) currentJobNoise.Add(actor, level);
@@ -92,7 +93,7 @@ namespace KeepItQuiet
                 soothers.Add(source, new List<Vector2Int>());
             }
             if (Prefs.LogVerbose) Log.Message($"[KeepItQuiet] Adding soothers level {level} for {source} @ {center}");
-            soothers[source].AddRange(MakeNoise(center, level * -1, maxLevel));
+            soothers[source].AddRange(MakeNoise(center, level * -1, maxLevel, true, false));
         }
 
         public bool GetCellBool(int index)
@@ -162,7 +163,7 @@ namespace KeepItQuiet
             }
         }
 
-        private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0, bool spread = false)
+        private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0, bool spread = false, bool attenuate = false)
         {
             if (level > 2 * GenRadial.MaxRadialPatternRadius)
             {
@@ -177,7 +178,7 @@ namespace KeepItQuiet
                 //float decay = /*spread ? tile.DistanceTo(center) :*/ tile.DistanceToSquared(center) / levelMod;
                 //int str = Mathf.RoundToInt(levelMod - decay);
                 var dist = tile.DistanceTo(center);
-                float str = NoiseSpread(levelMod, dist, spread);
+                float str = NoiseSpread(levelMod, dist, spread, attenuate);
                 if (maxLevel > 0 && str > maxLevel) str = maxLevel;
                 if (str > 0)
                 {
@@ -199,12 +200,11 @@ namespace KeepItQuiet
             return result;
         }
 
-        private float NoiseSpread(float level, float dist, bool spread)
+        private float NoiseSpread(float level, float dist, bool spread, bool attenuate)
         {
-            //spread:       f(x) = (x/4)*(1+cos(dist*pi/x))      peak is half the level, reach equals level
-            //no spread:    f(x) = (x/2)*(1+cos(dist*pi/(x/2)))  peak equals level, reaches half the level
-            int xFactor = spread ? 1 : 2;
-            int yFactor = spread ? 4 : 2;
+            //base cosine function: f(x) = (x/yFactor)*(1+cos(dist*pi/(x/xFactor)))
+            int xFactor = spread ? 1 : 2; // determines how far the noise reaches: if spread, reach = level, else reach = level/2
+            int yFactor = attenuate ? 4 : 2; //determines the peak level: if attenuated, peak = level, else peak = level/2;
             return (level / yFactor) * (1 + Mathf.Cos(dist * Mathf.PI / (level / xFactor)));
         }
 

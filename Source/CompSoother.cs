@@ -12,22 +12,41 @@ namespace KeepItQuiet
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            MapComp_Noise noiseMap = parent.Map.GetComponent<MapComp_Noise>();
-            if (noiseMap != null)
-            {
-                noiseMap.AddSoother(parent, parent.Position, Props.power, Props.maxLevel);
-            }
+            UpdateSoother();
         }
 
         public override void PostDeSpawn(Map map)
         {
             base.PostDeSpawn(map);
-            MapComp_Noise noiseMap = map.GetComponent<MapComp_Noise>();
-            if (noiseMap != null)
+            UpdateSoother();
+        }
+
+        public override void ReceiveCompSignal(string signal)
+        {
+            if (signal == "PowerTurnedOn" || signal == "PowerTurnedOff" || signal == "FlickedOn" || signal == "FlickedOff" || signal == "Refueled" || signal == "RanOutOfFuel" || signal == "ScheduledOn" || signal == "ScheduledOff" || signal == "MechClusterDefeated")
             {
-                noiseMap.ClearSoother(parent);
+                UpdateSoother();
             }
         }
+
+        public void UpdateSoother()
+        {
+            MapComp_Noise noiseMap = parent.Map?.GetComponent<MapComp_Noise>();
+            if (noiseMap == null) return;
+            bool shouldBeLitNow = ShouldBeOnNow;
+            if (effectOn == shouldBeLitNow)
+            {
+                return;
+            }
+            effectOn = shouldBeLitNow;
+            if (!effectOn)
+            {
+                noiseMap.ClearSoother(parent);
+                return;
+            }
+            noiseMap.AddSoother(parent, parent.Position, Props.power, Props.maxLevel);
+        }
+
 
         public CompProperties_Soother Props
         {
@@ -36,5 +55,29 @@ namespace KeepItQuiet
                 return (CompProperties_Soother)props;
             }
         }
+
+        private bool effectOn;
+
+        private bool ShouldBeOnNow
+        {
+            get
+            {
+                if (!parent.Spawned)
+                {
+                    return false;
+                }
+                if (!FlickUtility.WantsToBeOn(parent))
+                {
+                    return false;
+                }
+                CompPowerTrader compPowerTrader = parent.TryGetComp<CompPowerTrader>();
+                if (compPowerTrader != null && !compPowerTrader.PowerOn)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
     }
 }

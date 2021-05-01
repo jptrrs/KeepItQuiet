@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Patch>
-  
+
   <Operation Class="PatchOperationInsert">
     <xpath>*/ThinkTreeDef[defName = "MainColonistBehaviorCore"]/thinkRoot[@Class="ThinkNode_Tagger"]/subNodes/li[@Class="ThinkNode_PrioritySorter"]/subNodes//li[2]</xpath>
     <value>
-      <li Class="KeepItQuiet.JobGiver_SeekQuietPlace"/>
+      <li Class="KeepItQuiet.JobGiver_SeekQuietPlace" />
     </value>
   </Operation>
 
@@ -35,40 +35,4 @@
     </operations>
   </Operation>
 
-  <!--Adjusting vanilla soundDefs noise-->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/SoundDef[defName="FireBurning"]</xpath>
-        <value>
-          <overrideNoiseVolume>6</overrideNoiseVolume>
-        </value>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/SoundDef[defName="Recipe_MakeStoneBlocks"]</xpath>
-        <value>
-          <overrideNoiseVolume>16</overrideNoiseVolume>
-        </value>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/SoundDef[defName="Recipe_ButcherCorpseFlesh"]</xpath>
-        <value>
-          <overrideNoiseVolume>8</overrideNoiseVolume>
-        </value>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/SoundDef[defName="Interact_Research"]</xpath>
-        <value>
-          <overrideNoiseVolume>4</overrideNoiseVolume>
-        </value>
-      </li>
-      <li Class="PatchOperationAttributeAdd">
-        <xpath>/Defs/SoundDef/overrideNoiseVolume/..</xpath>
-        <attribute>Class</attribute>
-        <value>KeepItQuiet.NoisySoundDef</value>
-      </li>
-    </operations>
-  </Operation>
-  
 </Patch>

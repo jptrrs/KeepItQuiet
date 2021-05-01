@@ -10,19 +10,36 @@ namespace KeepItQuiet
     [StaticConstructorOnStartup]
     public class MapComp_Noise : MapComponent, ICellBoolGiver
     {
+        public static readonly SimpleCurve noiseDecayPerLevel = new SimpleCurve
+        {
+            {
+                new CurvePoint(1f, 20f),
+                true
+            },
+            {
+                new CurvePoint(10f, 10f),
+                true
+            },
+            {
+                new CurvePoint(50f, 5f),
+                true
+            }
+        };
+
         public static bool toggleShow = false;
         public Dictionary<int, List<Vector2Int>> bangs;
-        public Dictionary<Thing, List<Vector2Int>> soothers;
+        public Dictionary<Pawn, int> currentJobNoise;
         public int[] noiseGrid;
         public Dictionary<Sustainer, List<Vector2Int>> polluters;
-        public Dictionary<Pawn, int> currentJobNoise;
+        public Dictionary<Thing, List<Vector2Int>> soothers;
         protected static CellBoolDrawer drawer;
         protected float defaultOpacity;
+        private const float roomContainment = 0.33f;
+        private const int updateDelay = 60; //60 ticks = 1 second
         private static Color
             noisyColor = Color.red,
             silentColor = Color.cyan;
         private Map lastSeenMap;
-        private const int updateDelay = 60; //60 ticks = 1 second
         private Func<int, Color> noiseColor = (value) => value > 0 ? noisyColor : silentColor;
 
         public MapComp_Noise(Map map) : base(map)
@@ -96,6 +113,16 @@ namespace KeepItQuiet
             soothers[source].AddRange(MakeNoise(center, level * -1, maxLevel, true, false));
         }
 
+        public void ClearSoother(Thing source)
+        {
+            if (soothers.ContainsKey(source))
+            {
+                ClearNoise(soothers[source]);
+                soothers[source].Clear();
+                drawer.SetDirty();
+            }
+        }
+
         public bool GetCellBool(int index)
         {
             return !Find.CurrentMap.fogGrid.IsFogged(index) && noiseGrid[index] != 0;
@@ -152,17 +179,6 @@ namespace KeepItQuiet
                 noiseGrid[value.x] -= value.y;
             }
         }
-
-        public void ClearSoother(Thing source)
-        {
-            if (soothers.ContainsKey(source))
-            {
-                ClearNoise(soothers[source]);
-                soothers[source].Clear();
-                drawer.SetDirty();
-            }
-        }
-
         private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0, bool spread = false, bool attenuate = false)
         {
             if (level > 2 * GenRadial.MaxRadialPatternRadius)
@@ -172,14 +188,17 @@ namespace KeepItQuiet
             }
             var levelMod = Mathf.Abs(level); // because there is such a thing as "negative noise".
             var radius = Mathf.Min(levelMod, GenRadial.MaxRadialPatternRadius) / (spread ? 1 : 2);
+            Room room = center.GetRoom(map);
             var result = new List<Vector2Int>();
             foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, radius, true).Where(c => c.InBounds(map)))
             {
-                //float decay = /*spread ? tile.DistanceTo(center) :*/ tile.DistanceToSquared(center) / levelMod;
-                //int str = Mathf.RoundToInt(levelMod - decay);
                 var dist = tile.DistanceTo(center);
                 float str = NoiseSpread(levelMod, dist, spread, attenuate);
                 if (maxLevel > 0 && str > maxLevel) str = maxLevel;
+                if (!attenuate && room != null && !room.ContainsCell(tile))
+                {
+                    str *= 1 - roomContainment;
+                }
                 if (str > 0)
                 {
                     if (level < 0) str *= -1;
@@ -207,21 +226,5 @@ namespace KeepItQuiet
             int yFactor = attenuate ? 4 : 2; //determines the peak level: if attenuated, peak = level, else peak = level/2;
             return (level / yFactor) * (1 + Mathf.Cos(dist * Mathf.PI / (level / xFactor)));
         }
-
-        public static readonly SimpleCurve noiseDecayPerLevel = new SimpleCurve
-        {
-            {
-                new CurvePoint(1f, 20f),
-                true
-            },
-            {
-                new CurvePoint(10f, 10f),
-                true
-            },
-            {
-                new CurvePoint(50f, 5f),
-                true
-            }
-        };
     }
 }

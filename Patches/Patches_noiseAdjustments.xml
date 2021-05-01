@@ -37,6 +37,18 @@
         </value>
       </li>
       <li Class="PatchOperationAdd">
+        <xpath>/Defs/SoundDef[defName="Standard_Pickup"]</xpath>
+        <value>
+          <overrideNoiseVolume>10</overrideNoiseVolume>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/SoundDef/defName[contains(text(),"_Drop")]/..</xpath>
+        <value>
+          <overrideNoiseVolume>10</overrideNoiseVolume>
+        </value>
+      </li>    
+      <li Class="PatchOperationAdd">
         <xpath>/Defs/SoundDef/defName[contains(text(),"Bow")]/..</xpath>
         <value>
           <overrideNoiseVolume>4</overrideNoiseVolume>

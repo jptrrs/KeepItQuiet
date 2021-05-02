@@ -33,6 +33,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{1B13
 		Patches\Patches_noiseAdjustments.xml = Patches\Patches_noiseAdjustments.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{030085A6-38DE-45BC-A579-61A63A38CDD7}"
+	ProjectSection(SolutionItems) = preProject
+		News\KeepItQuiet_UpdateFeatures.xml = News\KeepItQuiet_UpdateFeatures.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -138,7 +138,20 @@
     </match>
   </Operation>
 
-    <!--Must be at the end-->
+  <!--Vanilla Books Expanded-->
+  <Operation Class="JPTools.PatchOperationFindModById">
+    <mods>
+      <li>VanillaExpanded.VBooksE</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/SoundDef[defName="Recipe_Write"]</xpath>
+      <value>
+        <overrideNoiseVolume>4</overrideNoiseVolume>
+      </value>
+    </match>
+  </Operation>
+
+  <!--Must be at the end-->
   <Operation Class="PatchOperationAttributeAdd">
     <xpath>/Defs/SoundDef/overrideNoiseVolume/..</xpath>
     <attribute>Class</attribute>

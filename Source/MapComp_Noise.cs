@@ -148,11 +148,24 @@ namespace KeepItQuiet
 
         public override void MapComponentUpdate()
         {
-            if (toggleShow)
+            base.MapComponentUpdate();
+            //if (toggleShow)
+            //{
+            //    drawer.MarkForDraw();
+            //}
+            //drawer.CellBoolDrawerUpdate();
+            if (!toggleShow) return;
+            if (Find.CurrentMap != lastSeenMap)
             {
-                drawer.MarkForDraw();
+                MakeDrawer();
             }
+            drawer.MarkForDraw();
             drawer.CellBoolDrawerUpdate();
+        }
+
+        public void MakeDrawer()
+        {
+            drawer = new CellBoolDrawer(this, Find.CurrentMap.Size.x, Find.CurrentMap.Size.z);
         }
 
         public void Silence(int tick)
@@ -179,6 +192,7 @@ namespace KeepItQuiet
                 noiseGrid[value.x] -= value.y;
             }
         }
+
         private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0, bool spread = false, bool attenuate = false)
         {
             if (level > 2 * GenRadial.MaxRadialPatternRadius)

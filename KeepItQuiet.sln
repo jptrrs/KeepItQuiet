@@ -13,15 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{6667B02E-3
 		Defs\Traits.xml = Defs\Traits.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{5DD7ACC8-1975-4790-BED3-E7B3BF3937EC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{B0EE1B9F-B934-4A47-9C71-76BE53DC98C0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{C9FD8C67-5C9E-49DD-B3C0-6316DDB78430}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\English\Keyed\KeepItQuiet_keys.xml = Languages\English\Keyed\KeepItQuiet_keys.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4F3826F9-425D-4CD0-BC73-A6BB1345F688}"
 	ProjectSection(SolutionItems) = preProject
 		About\About.xml = About\About.xml
@@ -36,6 +27,102 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{030085A6-38DE-45BC-A579-61A63A38CDD7}"
 	ProjectSection(SolutionItems) = preProject
 		News\KeepItQuiet_UpdateFeatures.xml = News\KeepItQuiet_UpdateFeatures.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{C1C96733-DF05-456F-8C94-8DB1FB3FBC3B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChineseSimplified", "ChineseSimplified", "{E38222F5-2DFF-4410-92AC-C75DA032D321}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefInjected", "DefInjected", "{F2734B15-3965-4A3B-8F1A-874667FD581B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobDef", "JobDef", "{510AD81B-C649-4FA2-BD6B-800CB4DD9737}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseSimplified\DefInjected\JobDef\Jobs.xml = Languages\ChineseSimplified\DefInjected\JobDef\Jobs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NeedDef", "NeedDef", "{830E07BD-C01C-4D1F-B2C0-60F132C681ED}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseSimplified\DefInjected\NeedDef\Needs_Misc.xml = Languages\ChineseSimplified\DefInjected\NeedDef\Needs_Misc.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThoughtDef", "ThoughtDef", "{41737475-5DE2-40E5-A323-1096564C7DC3}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseSimplified\DefInjected\ThoughtDef\Thoughts_Situation_Needs.xml = Languages\ChineseSimplified\DefInjected\ThoughtDef\Thoughts_Situation_Needs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraitDef", "TraitDef", "{00ACCCEE-2699-4E81-B340-5AF8DFC35725}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseSimplified\DefInjected\TraitDef\Traits.xml = Languages\ChineseSimplified\DefInjected\TraitDef\Traits.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{AB0AD1D2-5CE1-4635-9127-81999AB47547}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseSimplified\Keyed\KeepItQuiet_keys.xml = Languages\ChineseSimplified\Keyed\KeepItQuiet_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChineseTraditional", "ChineseTraditional", "{C810B56A-C2F4-4B14-816E-1A4EB2D8038E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefInjected", "DefInjected", "{E0584470-BFB4-46EA-A2BF-C816EA73A5F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobDef", "JobDef", "{F09D38D5-7D2E-4161-988B-20F2322C80C6}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseTraditional\DefInjected\JobDef\Jobs.xml = Languages\ChineseTraditional\DefInjected\JobDef\Jobs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NeedDef", "NeedDef", "{07F6F46E-F4A4-430F-98EA-81B9880A99B2}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseTraditional\DefInjected\NeedDef\Needs_Misc.xml = Languages\ChineseTraditional\DefInjected\NeedDef\Needs_Misc.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThoughtDef", "ThoughtDef", "{CC87913F-FAD0-4698-BFF8-48B350F6DF85}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseTraditional\DefInjected\ThoughtDef\Thoughts_Situation_Needs.xml = Languages\ChineseTraditional\DefInjected\ThoughtDef\Thoughts_Situation_Needs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraitDef", "TraitDef", "{5E478264-5F3B-448D-9376-F0BEBFC1F44B}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseTraditional\DefInjected\TraitDef\Traits.xml = Languages\ChineseTraditional\DefInjected\TraitDef\Traits.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{62573575-BBB6-410B-97F1-0017AD68E93C}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\ChineseTraditional\Keyed\KeepItQuiet_keys.xml = Languages\ChineseTraditional\Keyed\KeepItQuiet_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{67FE92B3-CCFB-492D-A940-0FAA4288256A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{9F51DA4A-D3E7-42C8-976B-D73B23BBACD6}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\English\Keyed\KeepItQuiet_keys.xml = Languages\English\Keyed\KeepItQuiet_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "French", "French", "{C3450DF5-57F8-4DEC-B8E8-AB92D396422B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefInjected", "DefInjected", "{0C002DCF-3974-425C-8F23-757BE279C67A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobDef", "JobDef", "{AD1574DE-BAB6-4CE6-BBD2-FF5481EB5B7B}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\French\DefInjected\JobDef\Jobs.xml = Languages\French\DefInjected\JobDef\Jobs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NeedDef", "NeedDef", "{DF6136E2-9219-4488-B059-AA709612C5BD}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\French\DefInjected\NeedDef\Needs_Misc.xml = Languages\French\DefInjected\NeedDef\Needs_Misc.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThoughtDef", "ThoughtDef", "{15B60A3A-7AE6-4D7E-9DF6-939E9AA989BF}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\French\DefInjected\ThoughtDef\Thoughts_Situation_Needs.xml = Languages\French\DefInjected\ThoughtDef\Thoughts_Situation_Needs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraitDef", "TraitDef", "{05126C09-6E80-4288-B1CA-709A48F40E88}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\French\DefInjected\TraitDef\Traits.xml = Languages\French\DefInjected\TraitDef\Traits.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{C45E5FF3-954D-4148-915C-A28CFEE8EC51}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\French\Keyed\KeepItQuiet_keys.xml = Languages\French\Keyed\KeepItQuiet_keys.xml
 	EndProjectSection
 EndProject
 Global
@@ -53,8 +140,29 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B0EE1B9F-B934-4A47-9C71-76BE53DC98C0} = {5DD7ACC8-1975-4790-BED3-E7B3BF3937EC}
-		{C9FD8C67-5C9E-49DD-B3C0-6316DDB78430} = {B0EE1B9F-B934-4A47-9C71-76BE53DC98C0}
+		{E38222F5-2DFF-4410-92AC-C75DA032D321} = {C1C96733-DF05-456F-8C94-8DB1FB3FBC3B}
+		{F2734B15-3965-4A3B-8F1A-874667FD581B} = {E38222F5-2DFF-4410-92AC-C75DA032D321}
+		{510AD81B-C649-4FA2-BD6B-800CB4DD9737} = {F2734B15-3965-4A3B-8F1A-874667FD581B}
+		{830E07BD-C01C-4D1F-B2C0-60F132C681ED} = {F2734B15-3965-4A3B-8F1A-874667FD581B}
+		{41737475-5DE2-40E5-A323-1096564C7DC3} = {F2734B15-3965-4A3B-8F1A-874667FD581B}
+		{00ACCCEE-2699-4E81-B340-5AF8DFC35725} = {F2734B15-3965-4A3B-8F1A-874667FD581B}
+		{AB0AD1D2-5CE1-4635-9127-81999AB47547} = {E38222F5-2DFF-4410-92AC-C75DA032D321}
+		{C810B56A-C2F4-4B14-816E-1A4EB2D8038E} = {C1C96733-DF05-456F-8C94-8DB1FB3FBC3B}
+		{E0584470-BFB4-46EA-A2BF-C816EA73A5F7} = {C810B56A-C2F4-4B14-816E-1A4EB2D8038E}
+		{F09D38D5-7D2E-4161-988B-20F2322C80C6} = {E0584470-BFB4-46EA-A2BF-C816EA73A5F7}
+		{07F6F46E-F4A4-430F-98EA-81B9880A99B2} = {E0584470-BFB4-46EA-A2BF-C816EA73A5F7}
+		{CC87913F-FAD0-4698-BFF8-48B350F6DF85} = {E0584470-BFB4-46EA-A2BF-C816EA73A5F7}
+		{5E478264-5F3B-448D-9376-F0BEBFC1F44B} = {E0584470-BFB4-46EA-A2BF-C816EA73A5F7}
+		{62573575-BBB6-410B-97F1-0017AD68E93C} = {C810B56A-C2F4-4B14-816E-1A4EB2D8038E}
+		{67FE92B3-CCFB-492D-A940-0FAA4288256A} = {C1C96733-DF05-456F-8C94-8DB1FB3FBC3B}
+		{9F51DA4A-D3E7-42C8-976B-D73B23BBACD6} = {67FE92B3-CCFB-492D-A940-0FAA4288256A}
+		{C3450DF5-57F8-4DEC-B8E8-AB92D396422B} = {C1C96733-DF05-456F-8C94-8DB1FB3FBC3B}
+		{0C002DCF-3974-425C-8F23-757BE279C67A} = {C3450DF5-57F8-4DEC-B8E8-AB92D396422B}
+		{AD1574DE-BAB6-4CE6-BBD2-FF5481EB5B7B} = {0C002DCF-3974-425C-8F23-757BE279C67A}
+		{DF6136E2-9219-4488-B059-AA709612C5BD} = {0C002DCF-3974-425C-8F23-757BE279C67A}
+		{15B60A3A-7AE6-4D7E-9DF6-939E9AA989BF} = {0C002DCF-3974-425C-8F23-757BE279C67A}
+		{05126C09-6E80-4288-B1CA-709A48F40E88} = {0C002DCF-3974-425C-8F23-757BE279C67A}
+		{C45E5FF3-954D-4148-915C-A28CFEE8EC51} = {C3450DF5-57F8-4DEC-B8E8-AB92D396422B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B2F886B-FE7A-44FB-8D90-B142992FFEA3}

@@ -195,13 +195,14 @@ namespace KeepItQuiet
 
         private List<Vector2Int> MakeNoise(IntVec3 center, float level, int maxLevel = 0, bool spread = false, bool attenuate = false)
         {
-            if (level > 2 * GenRadial.MaxRadialPatternRadius)
+            var maxRadius = Mathf.RoundToInt(GenRadial.MaxRadialPatternRadius);
+            if (level > 2 * maxRadius)
             {
-                level = 2 * GenRadial.MaxRadialPatternRadius;
+                level = 2 * maxRadius;
                 spread = false;
             }
             var levelMod = Mathf.Abs(level); // because there is such a thing as "negative noise".
-            var radius = Mathf.Min(levelMod, GenRadial.MaxRadialPatternRadius) / (spread ? 1 : 2);
+            var radius = Mathf.Min(levelMod, maxRadius) / (spread ? 1 : 2);
             Room room = center.GetRoom(map);
             var result = new List<Vector2Int>();
             foreach (IntVec3 tile in GenRadial.RadialCellsAround(center, radius, true).Where(c => c.InBounds(map)))

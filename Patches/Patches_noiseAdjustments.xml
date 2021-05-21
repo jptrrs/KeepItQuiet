@@ -108,6 +108,24 @@
     </match>
   </Operation>
   
+  <!--Rimefeller-->
+  <Operation Class="JPTools.PatchOperationFindModById">
+    <mods>
+      <li>Dubwise.Rimefeller</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/SoundDef/defName[.="Cracker_Ambience" or .="FuelGen_Ambience"]/..</xpath>
+          <value>
+            <overrideNoiseVolume>20</overrideNoiseVolume>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  
   <!--VFE - Vikings-->
   <Operation Class="JPTools.PatchOperationFindModById">
     <mods>

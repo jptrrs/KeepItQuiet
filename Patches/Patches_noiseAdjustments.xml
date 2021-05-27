@@ -87,7 +87,7 @@
       <success>Always</success>
       <operations>
         <li Class="PatchOperationAdd">
-          <xpath>/Defs/SoundDef/defName[.="DrainHole" or .="ToiletFlush" or  .="SewageStart" or .="shower_Ambience" or .="sewage_Ambience" or .="hottub_Ambience"]/..</xpath>
+          <xpath>/Defs/SoundDef/defName[.="DrainHole" or .="ToiletFlush" or  .="SewageStart" or .="shower_Ambience" or .="sewage_Ambience" or .="hottub_Ambience" or .="washingmachine"]/..</xpath>
           <value>
             <overrideNoiseVolume>10</overrideNoiseVolume>
           </value>

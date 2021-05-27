@@ -6,16 +6,11 @@
     <mods>
       <li>OskarPotocki.VanillaFactionsExpanded.SettlersModule</li>
     </mods>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-        <li Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="Windmill"]/building</xpath>
-          <value>
-            <soundAmbient>WaterMill_Ambience</soundAmbient>
-          </value>
-        </li>
-      </operations>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Windmill"]/building</xpath>
+      <value>
+        <soundAmbient>WaterMill_Ambience</soundAmbient>
+      </value>
     </match>
   </Operation>
 

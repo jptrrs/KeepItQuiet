@@ -127,10 +127,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{C45E5FF3
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		1.2|Any CPU = 1.2|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63B85605-72D9-4766-8774-A313BA818542}.1.2|Any CPU.ActiveCfg = 1.2|Any CPU
+		{63B85605-72D9-4766-8774-A313BA818542}.1.2|Any CPU.Build.0 = 1.2|Any CPU
 		{63B85605-72D9-4766-8774-A313BA818542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63B85605-72D9-4766-8774-A313BA818542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B85605-72D9-4766-8774-A313BA818542}.Release|Any CPU.ActiveCfg = Release|Any CPU
